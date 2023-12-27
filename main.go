@@ -41,14 +41,16 @@ func onReady() {
 	systray.SetTemplateIcon(appIcon, appIcon)
 	item1 := systray.AddMenuItemCheckbox("item 1", "", true)
 	item2 := systray.AddMenuItemCheckbox("item 2", "", false)
+	item3 := systray.AddMenuItemCheckbox("item 3", "", false)
 	group1 := &ItemGroup{}
-	group1.AddItems(item1, item2)
+	group1.AddItems(item1, item2, item3)
 
-	item3 := systray.AddMenuItem("submenu", "")
-	subitem1 := item3.AddSubMenuItemCheckbox("subitem 1", "", true)
-	subitem2 := item3.AddSubMenuItemCheckbox("subitem 2", "", false)
+	submenu := systray.AddMenuItem("submenu", "")
+	subitem1 := submenu.AddSubMenuItemCheckbox("subitem 1", "", true)
+	subitem2 := submenu.AddSubMenuItemCheckbox("subitem 2", "", false)
+	subitem3 := submenu.AddSubMenuItemCheckbox("subitem 3", "", false)
 	group2 := &ItemGroup{}
-	group2.AddItems(subitem1, subitem2)
+	group2.AddItems(subitem1, subitem2, subitem3)
 
 	for {
 		select {
@@ -56,10 +58,14 @@ func onReady() {
 			group1.Check(0)
 		case <-item2.ClickedCh:
 			group1.Check(1)
+		case <-item3.ClickedCh:
+			group1.Check(2)
 		case <-subitem1.ClickedCh:
 			group2.Check(0)
 		case <-subitem2.ClickedCh:
 			group2.Check(1)
+		case <-subitem3.ClickedCh:
+			group2.Check(2)
 		}
 	}
 }
